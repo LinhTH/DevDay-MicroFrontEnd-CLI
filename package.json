@@ -2,7 +2,7 @@
   "name": "microfrontend-cli",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "cli.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -26,5 +26,8 @@
     "figlet": "^1.2.4",
     "inquirer": "^7.0.0",
     "simple-git": "^1.126.0"
+  },
+  "bin": {
+    "mc": "cli.js"
   }
 }
