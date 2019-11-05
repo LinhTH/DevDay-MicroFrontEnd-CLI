@@ -1,11 +1,11 @@
 {
-  "name": "react-template",
+  "name": "react-component-name",
   "version": "21.11.2019",
   "private": true,
   "scripts": {
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
-    "publish": "npm run build && http-server ./build -p 8082"
+    "publish": "npm run build && http-server ./build -p port-number"
   },
   "dependencies": {
     "bootstrap": "^4.3.1",

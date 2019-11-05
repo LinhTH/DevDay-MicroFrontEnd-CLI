@@ -3,6 +3,7 @@ const clear = require('clear');
 const figlet = require('figlet');
 const fs = require('fs-extra');
 const path = require('path');
+const replace = require('replace');
 const configstore = require('configstore');
 const baseProjectInquirer = require('./lib/inquirer/base-project');
 const componentNameInquirer = require('./lib/inquirer/component-name');
@@ -36,16 +37,22 @@ const run = async () => {
   answer = await componentNameInquirer.ask();
   componentName = answer[componentNameInquirer.questionName];
 
-  // answer = await teamNameInquirer.ask();
-  // teamName = answer[teamNameInquirer.questionName];
+  answer = await teamNameInquirer.ask();
+  teamName = answer[teamNameInquirer.questionName];
 
-  // answer = await portInquirer.ask();
-  // port = answer[portInquirer.questionName];
+  answer = await portInquirer.ask();
+  port = answer[portInquirer.questionName];
 
-  createFolder(baseProject, componentName);
+  const folderName = initialiseProject(baseProject, componentName);
+
+  replaceComponentName(folderName, componentName);
+
+  replaceTeamName(folderName, teamName);
+
+  replacePort(folderName, port);
 };
 
-const createFolder = (baseProject, componentName) => {
+const initialiseProject = (baseProject, componentName) => {
   printCyan(
     `⏳  Creating ${baseProject} Web Component by the name of ${componentName} ...`
   );
@@ -65,6 +72,42 @@ const createFolder = (baseProject, componentName) => {
 
   printCyan('✅  Initialized project.');
   console.log();
+
+  return folderName;
+};
+
+const replaceComponentName = (folderName, componentName) => {
+  replace({
+    regex: 'react-component-name',
+    replacement: componentName,
+    paths: [
+      `${folderName}/package.json`,
+      `${folderName}/src/App.js`,
+      `${folderName}/public/index.html`
+    ],
+    recursive: true,
+    silent: true
+  });
+};
+
+const replaceTeamName = (folderName, teamName) => {
+  replace({
+    regex: 'team-name',
+    replacement: teamName,
+    paths: [`${folderName}/public/index.html`],
+    recursive: true,
+    silent: true
+  });
+};
+
+const replacePort = (folderName, port) => {
+  replace({
+    regex: 'port-number',
+    replacement: port,
+    paths: [`${folderName}/package.json`],
+    recursive: true,
+    silent: true
+  });
 };
 
 run();

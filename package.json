@@ -24,9 +24,10 @@
     "clui": "^0.3.6",
     "configstore": "^5.0.0",
     "figlet": "^1.2.4",
+    "fs-extra": "^6.0.1",
     "inquirer": "^7.0.0",
-    "simple-git": "^1.126.0",
-    "fs-extra": "^6.0.1"
+    "replace": "^1.1.1",
+    "simple-git": "^1.126.0"
   },
   "bin": {
     "mc": "cli.js"

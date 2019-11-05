@@ -50,6 +50,6 @@ ReactWebComponent.setProperties({
   teamName: ''
 });
 
-ReactWebComponent.render(App, 'react-template');
+ReactWebComponent.render(App, 'react-component-name');
 
 export default App;
