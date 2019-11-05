@@ -3,9 +3,13 @@ const clear = require('clear');
 const figlet = require('figlet');
 const fs = require('fs');
 const configstore = require('configstore');
-const inquirer = require('./lib/inquirer/select-base-project');
+const baseProjectInquirer = require('./lib/inquirer/base-project');
+const componentNameInquirer = require('./lib/inquirer/component-name');
 
 clear();
+
+let baseProject;
+let componentName;
 
 console.log(
   chalk.yellow(
@@ -18,8 +22,12 @@ console.log(
 );
 
 const run = async () => {
-  const credentials = await inquirer.askGithubCredentials();
-  _mkdirp(credentials['base project'][0]);
+  let answer = await baseProjectInquirer.ask();
+  // _mkdirp(credentials['base project'][0]);
+  baseProject = answer[baseProjectInquirer.questionName][0];
+
+  answer = await componentNameInquirer.ask();
+  componentName = answer[componentNameInquirer.questionName][0];
 };
 
 const _mkdirp = p => {
