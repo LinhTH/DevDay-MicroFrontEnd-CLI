@@ -4,11 +4,11 @@ const figlet = require('figlet');
 const fs = require('fs-extra');
 const path = require('path');
 const replace = require('replace');
-const configstore = require('configstore');
 const baseProjectInquirer = require('./lib/inquirer/base-project');
 const componentNameInquirer = require('./lib/inquirer/component-name');
 const teamNameInquirer = require('./lib/inquirer/team-name');
 const portInquirer = require('./lib/inquirer/port');
+const execSync = require('child_process').execSync;
 
 clear();
 
@@ -31,7 +31,6 @@ console.log(
 
 const run = async () => {
   let answer = await baseProjectInquirer.ask();
-  // _mkdirp(credentials['base project'][0]);
   baseProject = answer[baseProjectInquirer.questionName][0];
 
   answer = await componentNameInquirer.ask();
@@ -50,11 +49,20 @@ const run = async () => {
   replaceTeamName(folderName, teamName);
 
   replacePort(folderName, port);
+  installDependencies(folderName);
+
+  printGreen('✅  Done! 👍 Your project is ready for development.');
+  console.log(`
+        ${chalk.magenta('*')} ${chalk.magenta('To run project')}
+        $ ${chalk.cyan('npm run start')}
+        ${chalk.magenta('*')} ${chalk.magenta('To publish')}
+        $ ${chalk.cyan('npm run publish')}
+    `);
 };
 
 const initialiseProject = (baseProject, componentName) => {
   printCyan(
-    `⏳  Creating ${baseProject} Web Component by the name of ${componentName} ...`
+    `⏳  Creating ${baseProject} Web Component by the name of ${baseProject.toLowerCase()}-${componentName} ...`
   );
   console.log();
 
@@ -108,6 +116,16 @@ const replacePort = (folderName, port) => {
     recursive: true,
     silent: true
   });
+};
+
+const installDependencies = folderName => {
+  printCyan('⏳ Installing project dependencies...');
+  console.log();
+
+  let command = `cd ${folderName} && npm i`;
+  execSync(command, { stdio: [0, 1] });
+  printCyan('✅ Installed project dependencies.');
+  console.log();
 };
 
 run();
