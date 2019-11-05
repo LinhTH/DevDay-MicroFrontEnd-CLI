@@ -8,7 +8,13 @@ const inquirer = require('./lib/inquirer/select-base-project');
 clear();
 
 console.log(
-  chalk.yellow(figlet.textSync('AAVN MF', { horizontalLayout: 'full' }))
+  chalk.yellow(
+    figlet.textSync('AAVN MF', {
+      font: 'Ghost',
+      horizontalLayout: 'default',
+      verticalLayout: 'default'
+    })
+  )
 );
 
 const run = async () => {
