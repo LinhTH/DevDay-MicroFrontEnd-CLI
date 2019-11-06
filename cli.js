@@ -35,6 +35,7 @@ const run = async () => {
 
   answer = await componentNameInquirer.ask();
   componentName = answer[componentNameInquirer.questionName];
+  correctComponentName();
 
   answer = await teamNameInquirer.ask();
   teamName = answer[teamNameInquirer.questionName];
@@ -50,17 +51,16 @@ const run = async () => {
 
   replacePort(folderName, port);
   installDependencies(folderName);
-
-  printGreen('✅  Done! 👍 Your project is ready for development.');
-  console.log(`
-        ${chalk.magenta('*')} ${chalk.magenta('To run project')}
-        $ ${chalk.cyan('npm run start')}
-        ${chalk.magenta('*')} ${chalk.magenta('To publish')}
-        $ ${chalk.cyan('npm run publish')}
-    `);
+  printCompletionScreen();
 };
 
-const initialiseProject = (baseProject, componentName) => {
+const correctComponentName = () => {
+  if (!componentName.endsWith('component')) {
+    componentName = componentName + '-component';
+  }
+};
+
+const initialiseProject = baseProject => {
   printCyan(
     `⏳  Creating ${baseProject} Web Component by the name of ${baseProject.toLowerCase()}-${componentName} ...`
   );
@@ -84,7 +84,7 @@ const initialiseProject = (baseProject, componentName) => {
   return folderName;
 };
 
-const replaceComponentName = (folderName, componentName) => {
+const replaceComponentName = folderName => {
   replace({
     regex: 'react-component-name',
     replacement: componentName,
@@ -98,7 +98,7 @@ const replaceComponentName = (folderName, componentName) => {
   });
 };
 
-const replaceTeamName = (folderName, teamName) => {
+const replaceTeamName = folderName => {
   replace({
     regex: 'team-name',
     replacement: teamName,
@@ -108,7 +108,7 @@ const replaceTeamName = (folderName, teamName) => {
   });
 };
 
-const replacePort = (folderName, port) => {
+const replacePort = folderName => {
   replace({
     regex: 'port-number',
     replacement: port,
@@ -126,6 +126,16 @@ const installDependencies = folderName => {
   execSync(command, { stdio: [0, 1] });
   printCyan('✅ Installed project dependencies.');
   console.log();
+};
+
+const printCompletionScreen = () => {
+  printGreen('✅  Done! 👍 Your project is ready for development.');
+  console.log(`
+        ${chalk.magenta('*')} ${chalk.magenta('To run project')}
+        $ ${chalk.cyan('npm run start')}
+        ${chalk.magenta('*')} ${chalk.magenta('To publish')}
+        $ ${chalk.cyan('npm run publish')}
+    `);
 };
 
 run();
