@@ -9,15 +9,13 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico" />
   </head>
   <body>
-    <angular-book-summary-tile
-      id = '1'
-      title="Làm bạn với bầu trời"
-      thumbnail-url="https://salt.tikicdn.com/cache/w1200/ts/product/af/a1/4b/92477ec9b6688060b2b5d2022a60d3e6.jpg"
-      summary="Một câu chuyện giản dị, chứa đầy bất ngờ cho tới trang cuối cùng"
-      source-name="Tiki"
-      author="Nguyễn Nhật Ánh"
-      comment-number="35"
-      rating="5"
-    ></angular-book-summary-tile>
+    <angular-component-name team-name='team-name-template'></angular-component-name>
+
+    <script>
+      const component = document.querySelector("angular-component-name");
+      component.addEventListener("clicked", (event) => {
+        alert(`${event.detail.message}, You have just clicked!! 🚀` );
+      });
+    </script>
   </body>
 </html>

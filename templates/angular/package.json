@@ -1,14 +1,10 @@
 {
-  "name": "angular-book-summary-tile",
-  "version": "0.0.0",
+  "name": "angular-component-name",
+  "version": "21.11",
   "scripts": {
-    "ng": "ng",
     "start": "ng serve",
-    "publish": "npm run build && http-server ./dist -p 8081",
-    "build": "ng build --prod --output-hashing none --single-bundle true --outputPath=dist",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "publish": "npm run build && http-server ./dist -p port-number",
+    "build": "ng build --prod --output-hashing none --single-bundle true --outputPath=dist"
   },
   "private": true,
   "dependencies": {
