@@ -1,6 +1,6 @@
 {
   "name": "angular-component-name",
-  "version": "21.11",
+  "version": "21.11.19",
   "scripts": {
     "start": "ng serve",
     "publish": "npm run build && http-server ./dist -p port-number",

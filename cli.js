@@ -16,6 +16,9 @@ let baseProject;
 let componentName;
 let teamName;
 let port;
+let folderName;
+let angularComponentName;
+
 const printCyan = text => console.log(` ${chalk.cyan(text)}`);
 const printGreen = text => console.log(` ${chalk.green(text)}`);
 
@@ -37,20 +40,26 @@ const run = async () => {
   componentName = answer[componentNameInquirer.questionName];
   correctComponentName();
 
+  if (baseProject === 'Angular') {
+    buildAngularComponentName();
+  }
+
   answer = await teamNameInquirer.ask();
   teamName = answer[teamNameInquirer.questionName];
 
   answer = await portInquirer.ask();
   port = answer[portInquirer.questionName];
 
-  const folderName = initialiseProject(baseProject, componentName);
+  folderName = baseProject.toLowerCase() + '-' + componentName;
 
-  replaceComponentName(folderName, componentName);
+  initialiseProject();
 
-  replaceTeamName(folderName, teamName);
+  replaceComponentName();
 
-  replacePort(folderName, port);
-  installDependencies(folderName);
+  replaceTeamName();
+
+  replacePort();
+  installDependencies();
   printCompletionScreen();
 };
 
@@ -60,13 +69,19 @@ const correctComponentName = () => {
   }
 };
 
-const initialiseProject = baseProject => {
+const buildAngularComponentName = () => {
+  angularComponentName = componentName
+    .split('-')
+    .map(str => str.charAt(0).toUpperCase() + str.slice(1))
+    .join('');
+};
+
+const initialiseProject = () => {
   printCyan(
     `⏳  Creating ${baseProject} Web Component by the name of ${baseProject.toLowerCase()}-${componentName} ...`
   );
   console.log();
 
-  const folderName = baseProject.toLowerCase() + '-' + componentName;
   fs.ensureDirSync(folderName);
   fs.emptyDirSync(folderName);
 
@@ -80,35 +95,96 @@ const initialiseProject = baseProject => {
 
   printCyan('✅  Initialized project.');
   console.log();
-
-  return folderName;
 };
 
-const replaceComponentName = folderName => {
-  replace({
-    regex: 'react-component-name',
-    replacement: componentName,
-    paths: [
-      `${folderName}/package.json`,
-      `${folderName}/src/App.js`,
-      `${folderName}/public/index.html`
-    ],
-    recursive: true,
-    silent: true
-  });
+const replaceComponentName = () => {
+  if (baseProject === 'React') {
+    replace({
+      regex: 'react-component-name',
+      replacement: componentName,
+      paths: [
+        `${folderName}/package.json`,
+        `${folderName}/src/App.js`,
+        `${folderName}/public/index.html`
+      ],
+      recursive: true,
+      silent: true
+    });
+  }
+
+  if (baseProject === 'Angular') {
+    fs.renameSync(
+      `${folderName}/src/app/angular-component-name`,
+      `${folderName}/src/app/${componentName}`
+    );
+
+    fs.renameSync(
+      `${folderName}/src/app/${componentName}/angular-component-name.component.html`,
+      `${folderName}/src/app/${componentName}/${componentName}.component.html`
+    );
+
+    fs.renameSync(
+      `${folderName}/src/app/${componentName}/angular-component-name.component.ts`,
+      `${folderName}/src/app/${componentName}/${componentName}.component.ts`
+    );
+
+    fs.renameSync(
+      `${folderName}/src/app/${componentName}/angular-component-name.component.scss`,
+      `${folderName}/src/app/${componentName}/${componentName}.component.scss`
+    );
+
+    replace({
+      regex: 'angular-component-name',
+      replacement: componentName,
+      paths: [
+        `${folderName}/src/app/${componentName}/${componentName}.component.ts`,
+        `${folderName}/src/app/app.module.ts`,
+        `${folderName}/src/index.html`
+      ],
+      recursive: true,
+      silent: true
+    });
+
+    replace({
+      regex: 'AngularComponentNameComponent',
+      replacement: angularComponentName,
+      paths: [
+        `${folderName}/src/app/${componentName}/${componentName}.component.ts`,
+        `${folderName}/src/app/app.module.ts`
+      ],
+      recursive: true,
+      silent: true
+    });
+  }
 };
 
-const replaceTeamName = folderName => {
-  replace({
-    regex: 'team-name',
-    replacement: teamName,
-    paths: [`${folderName}/public/index.html`],
-    recursive: true,
-    silent: true
-  });
+const replaceTeamName = () => {
+  if (baseProject === 'React') {
+    replace({
+      regex: 'team-name',
+      replacement: teamName,
+      paths: [
+        baseProject === 'React'
+          ? `${folderName}/public/index.html`
+          : `${folderName}/src/index.html`
+      ],
+      recursive: true,
+      silent: true
+    });
+  }
+
+  if (baseProject === 'Angular') {
+    replace({
+      regex: 'team-name-template',
+      replacement: teamName,
+      paths: [`${folderName}/src/index.html`],
+      recursive: true,
+      silent: true
+    });
+  }
 };
 
-const replacePort = folderName => {
+const replacePort = () => {
   replace({
     regex: 'port-number',
     replacement: port,
@@ -118,7 +194,7 @@ const replacePort = folderName => {
   });
 };
 
-const installDependencies = folderName => {
+const installDependencies = () => {
   printCyan('⏳ Installing project dependencies...');
   console.log();
 
@@ -133,7 +209,7 @@ const printCompletionScreen = () => {
   console.log(`
         ${chalk.magenta('*')} ${chalk.magenta('To run project')}
         $ ${chalk.cyan('npm run start')}
-        ${chalk.magenta('*')} ${chalk.magenta('To publish')}
+        ${chalk.magenta('*')} ${chalk.magenta(`To publish on port ${port}`)}
         $ ${chalk.cyan('npm run publish')}
     `);
 };
