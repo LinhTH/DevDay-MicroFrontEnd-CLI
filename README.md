@@ -1,6 +1,8 @@
 The CLI will generate a initial Angular or React  project which is able to be built into a Web component.
 Its purpose is to facilitate participants in the AAVN DevDay event to create a project at ease.
 
+![CLI](https://raw.githubusercontent.com/LinhTH/DevDay-MicroFrontEnd-CLI/master/screenshot.PNG)
+
 ### Run without installation
 `npx aavn-mc-cli`
 
