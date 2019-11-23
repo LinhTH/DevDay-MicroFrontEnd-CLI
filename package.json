@@ -1,22 +1,27 @@
 {
   "name": "aavn-mc-cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "cli.js",
+  "version": "1.0.6",
+  "description": "A CLI is built for the AAVN Devday purpose",
+  "main": "bin/mc",
+  "bin": {
+    "aavn-mc-cli": "bin/mc",
+    "mc": "bin/mc"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LinhTH/DevDay-MicroFrontEnd-CLI.git"
+    "url": "git+https://github.com/DevDay2019-AxonActive/DevDay2019-Micro-Frontends.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/LinhTH/DevDay-MicroFrontEnd-CLI/issues"
-  },
-  "homepage": "https://github.com/LinhTH/DevDay-MicroFrontEnd-CLI#readme",
+  "keywords": [
+    "cli",
+    "aavn"
+  ],
+  "license": "MIT",
   "dependencies": {
     "chalk": "^2.4.2",
     "clear": "^0.1.0",
@@ -24,9 +29,11 @@
     "figlet": "^1.2.4",
     "fs-extra": "^6.0.1",
     "inquirer": "^7.0.0",
-    "replace": "^1.1.1"
+    "replace": "^1.1.1",
+    "esm": "^3.2.18"
   },
-  "bin": {
-    "mc": "cli.js"
-  }
+  "files": [
+    "src/",
+    "bin/"
+  ]
 }
